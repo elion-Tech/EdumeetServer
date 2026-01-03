@@ -3,8 +3,7 @@
   "name": "edumeet-backend",
   "version": "1.0.0",
   "description": "Secure API Proxy for Edumeet Platform",
-  "main": "index.ts",
-  "type": "module",
+  "main": "dist/index.js",
   "scripts": {
      "dev": "tsx watch index.ts",      
   "build": "tsc",                  
