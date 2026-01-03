@@ -19,7 +19,7 @@ app.get('/health', (req, res) => res.status(200).json({ status: 'ok', timestamp:
 app.use('/api', router);
 
 // Database Connection - Using provided Atlas URI with environment variable fallback
-const MONGODB_URI = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb+srv://elion:edumeet@cluster0.vaixme5.mongodb.net/?appName=Cluster0';
+const MONGODB_URI = process.env.MONGO_URI || process.env.MONGODB_URI || '';
 
 mongoose.connect(MONGODB_URI)
   .then(() => {
