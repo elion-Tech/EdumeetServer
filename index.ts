@@ -19,7 +19,12 @@ app.get('/health', (req, res) => res.status(200).json({ status: 'ok', timestamp:
 app.use('/api', router);
 
 // Database Connection - Using provided Atlas URI with environment variable fallback
-const MONGODB_URI = process.env.MONGO_URI || process.env.MONGODB_URI || '';
+const MONGODB_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error("❌ Error: MONGO_URI environment variable is not defined.");
+  process.exit(1);
+}
 
 mongoose.connect(MONGODB_URI)
   .then(() => {
