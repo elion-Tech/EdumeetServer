@@ -83,6 +83,16 @@ export const UserController = {
         }
     },
 
+    async create(req: any, res: any) {
+        try {
+            const user = new User(req.body);
+            await user.save();
+            res.status(201).json(user);
+        } catch (e) {
+            res.status(400).json({ error: "Failed to create user" });
+        }
+    },
+
     async enroll(req: any, res: any) {
         const { userId } = req.params;
         const { courseId } = req.body;
@@ -163,6 +173,7 @@ export const ProgressController = {
     async update(req: any, res: any) {
         try {
           const progress = await Progress.findByIdAndUpdate(req.body._id, req.body, { new: true });
+          if (!progress) return res.status(404).json({ error: "Progress not found" });
           res.json(progress);
         } catch (e) {
           res.status(400).json({ error: "Update failed" });
@@ -178,6 +189,7 @@ export const ProgressController = {
           capstoneFeedback: feedback,
           capstoneStatus: 'graded'
         }, { new: true });
+        if (!progress) return res.status(404).json({ error: "Progress not found" });
         res.json(progress);
       } catch (e) {
         res.status(500).json({ error: "Grading failed" });
@@ -189,6 +201,10 @@ export const NotificationController = {
     async getByUser(req: any, res: any) {
         try {
             const { userId } = req.params;
+            // Prevent 500 error by checking if userId is a valid MongoDB ObjectId
+            if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
+                return res.json([]);
+            }
             const notifications = await Notification.find({ userId }).sort({ date: -1 });
             res.json(notifications);
         } catch (e) {

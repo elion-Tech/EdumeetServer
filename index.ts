@@ -12,8 +12,19 @@ const PORT = process.env.PORT || 5000;
 app.use(cors() as any);
 app.use(express.json() as any);
 
+// Request Logging
+app.use((req, res, next) => {
+  console.log(`🌐 [${req.method}] ${req.originalUrl}`);
+  next();
+});
+
 // Health Check for Render zero-downtime deploys
 app.get('/health', (req, res) => res.status(200).json({ status: 'ok', timestamp: new Date(), environment: process.env.NODE_ENV || 'development' }));
+
+// Root Route
+app.get('/', (req, res) => {
+  res.status(200).send("Edumeet Server is Running 🚀");
+});
 
 // Register API Routes
 app.use('/api', router);
