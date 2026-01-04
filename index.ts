@@ -18,6 +18,17 @@ app.get('/health', (req, res) => res.status(200).json({ status: 'ok', timestamp:
 // Register API Routes
 app.use('/api', router);
 
+// 404 Handler - Returns JSON instead of HTML for missing routes
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not Found', message: `Cannot ${req.method} ${req.originalUrl}` });
+});
+
+// Global Error Handler - Catches errors and returns JSON
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('❌ Server Error:', err);
+  res.status(500).json({ error: 'Internal Server Error', message: err.message });
+});
+
 // Database Connection - Using provided Atlas URI with environment variable fallback
 const MONGODB_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
 
