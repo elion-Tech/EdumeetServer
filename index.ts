@@ -9,47 +9,23 @@ import { CourseController, UserController, ProgressController, NotificationContr
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const router = express.Router();
 
 app.use(cors() as any);
 app.use(express.json() as any);
-// Course Routes
-router.get('/courses', CourseController.getAll);
-router.get('/courses/:id', CourseController.getById);
-router.post('/courses', CourseController.create);
-router.delete('/courses/:id', CourseController.delete);
-router.patch('/courses/:id/publish', CourseController.togglePublish);
-router.post('/courses/:courseId/live', CourseController.scheduleLive);
-router.get('/courses/:id/students', CourseController.getEnrolledStudents);
 
 // Request Logging
 app.use((req, res, next) => {
   console.log(`🌐 [${req.method}] ${req.originalUrl}`);
   next();
 });
-// User Routes
-router.get('/users', UserController.getAll);
-router.post('/users', UserController.create);
-router.post('/login', UserController.login);
-router.patch('/users/:userId/suspend', UserController.toggleSuspension);
-router.delete('/users/:userId', UserController.delete);
-router.post('/users/:userId/enroll', UserController.enroll);
 
 // Health Check for Render zero-downtime deploys
 app.get('/health', (req, res) => res.status(200).json({ status: 'ok', timestamp: new Date(), environment: process.env.NODE_ENV || 'development' }));
-// Progress Routes
-router.get('/progress/:userId/:courseId', ProgressController.get);
-router.put('/progress', ProgressController.update);
-router.patch('/progress/:id/grade', ProgressController.gradeCapstone);
 
 // Root Route
 app.get('/', (req, res) => {
   res.status(200).send("Edumeet Server is Running 🚀");
 });
-// Notification Routes
-router.get('/notifications/:userId', NotificationController.getByUser);
-router.post('/notifications', NotificationController.send);
-router.patch('/notifications/:id/read', NotificationController.markRead);
 
 // Register API Routes
 app.use('/api', router);

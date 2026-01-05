@@ -10,6 +10,7 @@ router.get('/courses/:id', CourseController.getById);
 router.post('/courses', CourseController.create);
 router.delete('/courses/:id', CourseController.delete);
 router.get('/courses/:id/students', CourseController.getEnrolledStudents);
+router.patch('/courses/:id/publish', CourseController.togglePublish);
 router.post('/courses/:courseId/live', CourseController.scheduleLive);
 
 // User Routes
