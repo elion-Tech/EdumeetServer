@@ -61,6 +61,17 @@ export const CourseController = {
     }
   },
 
+  async togglePublish(req: any, res: any) {
+    try {
+      const { id } = req.params;
+      const { published } = req.body;
+      await Course.findByIdAndUpdate(id, { published });
+      res.status(200).send();
+    } catch (e) {
+      res.status(500).json({ error: "Failed to update publish status" });
+    }
+  },
+
   async scheduleLive(req: any, res: any) {
     try {
       const { courseId } = req.params;
