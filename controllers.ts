@@ -152,6 +152,19 @@ export const UserController = {
             console.error("Deletion Error:", e);
             res.status(500).json({ error: "User deletion failed" });
         }
+    },
+
+    async login(req: any, res: any) {
+        try {
+            const { email, password } = req.body;
+            const user = await User.findOne({ email });
+            if (!user || user.password !== password) {
+                return res.status(401).json({ error: "Invalid email or password" });
+            }
+            res.json(user);
+        } catch (e) {
+            res.status(500).json({ error: "Login failed" });
+        }
     }
 };
 

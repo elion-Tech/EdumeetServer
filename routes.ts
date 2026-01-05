@@ -14,6 +14,8 @@ router.post('/courses/:courseId/live', CourseController.scheduleLive);
 
 // User Routes
 router.get('/users', UserController.getAll);
+router.post('/users', UserController.create);
+router.post('/login', UserController.login);
 router.post('/users/:userId/enroll', UserController.enroll);
 router.patch('/users/:userId/suspend', UserController.toggleSuspension);
 router.delete('/users/:userId', UserController.delete);
