@@ -100,7 +100,8 @@ export const UserController = {
             await user.save();
             res.status(201).json(user);
         } catch (e) {
-            res.status(400).json({ error: "Failed to create user" });
+            console.error("Create User Error:", e);
+            res.status(400).json({ error: "Failed to create user", details: (e as any).message });
         }
     },
 
